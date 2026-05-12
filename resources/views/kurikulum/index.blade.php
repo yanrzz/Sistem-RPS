@@ -12,7 +12,7 @@
             <a href="/kurikulum" class="btn-clear-search"><i class="fas fa-times"></i> Reset</a>
         @endif
     </div>
-    <a href="/kurikulum/create">+ Tambah Kurikulum</a>
+    <a href="/kurikulum/create" class="btn btn-primary">+ Tambah Kurikulum</a>
 </div>
 
 @if($search)
@@ -28,6 +28,7 @@
     <th>Nama</th>
     <th>Tahun</th>
     <th>Status</th>
+    <th>Aksi</th>
 </tr>
 
 @foreach($data as $d)
@@ -36,6 +37,13 @@
     <td>{{ $d->nama_kurikulum }}</td>
     <td>{{ $d->tahun }}</td>
     <td>{{ $d->status }}</td>
+    <td>
+        <a href="/kurikulum/{{ $d->id }}/edit" class="btn btn-warning">Edit</a>
+        <form action="/kurikulum/{{ $d->id }}" method="POST" style="display:inline;">
+            @csrf @method('DELETE')
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+        </form>
+    </td>
 </tr>
 @endforeach
 </table>

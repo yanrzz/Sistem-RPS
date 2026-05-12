@@ -5,7 +5,7 @@
 @csrf
 
 <input type="text" name="nama_prodi" placeholder="Nama Prodi">
-<button type="submit">Simpan</button>
+<button type="submit" class="btn btn-success">Simpan</button>
 
 </form>
 @endsection

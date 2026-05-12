@@ -12,7 +12,7 @@
             <a href="/matakuliah" class="btn-clear-search"><i class="fas fa-times"></i> Reset</a>
         @endif
     </div>
-    <a href="/matakuliah/create">+ Tambah Mata Kuliah</a>
+    <a href="/matakuliah/create" class="btn btn-primary">+ Tambah Mata Kuliah</a>
 </div>
 
 @if($search)
@@ -51,11 +51,11 @@
         @endif
     </td>
     <td>
-        <a href="/matakuliah/{{ $d->id }}/edit">Edit</a>
+        <a href="/matakuliah/{{ $d->id }}/edit" class="btn btn-warning">Edit</a>
 
         <form action="/matakuliah/{{ $d->id }}" method="POST" style="display:inline;">
             @csrf @method('DELETE')
-            <button type="submit">Hapus</button>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
         </form>
     </td>
 </tr>

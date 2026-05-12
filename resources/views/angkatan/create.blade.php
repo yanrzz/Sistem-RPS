@@ -25,7 +25,7 @@
 
 <br><br>
 
-<button type="submit">Simpan</button>
+<button type="submit" class="btn btn-success">Simpan</button>
 
 </form>
 @endsection

@@ -15,7 +15,7 @@
             <a href="/semester" class="btn-clear-search"><i class="fas fa-times"></i> Reset</a>
         @endif
     </div>
-    <a href="/semester/create">Tambah Data</a>
+    <a href="/semester/create" class="btn btn-primary">Tambah Data</a>
 </div>
 
 @if($search)
@@ -39,11 +39,11 @@
             <td>{{ $i+1 }}</td>
             <td>{{ $d->nama_semester }}</td>
             <td>
-                <a href="/semester/{{ $d->id }}/edit">Edit</a> |
+                <a href="/semester/{{ $d->id }}/edit" class="btn btn-warning">Edit</a>
                 <form action="/semester/{{ $d->id }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin hapus?')">Hapus</button>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
                 </form>
             </td>
         </tr>

@@ -12,7 +12,7 @@
             <a href="/angkatan" class="btn-clear-search"><i class="fas fa-times"></i> Reset</a>
         @endif
     </div>
-    <a href="/angkatan/create">+ Tambah Angkatan</a>
+    <a href="/angkatan/create" class="btn btn-primary">+ Tambah Angkatan</a>
 </div>
 
 @if($search)
@@ -34,11 +34,11 @@
     <td>{{ $d->kurikulum->nama_kurikulum }}</td>
     <td>{{ $d->tahun_angkatan }}</td>
     <td>
-        <a href="/angkatan/{{ $d->id }}/edit">Edit</a>
+        <a href="/angkatan/{{ $d->id }}/edit" class="btn btn-warning">Edit</a>
 
         <form action="/angkatan/{{ $d->id }}" method="POST" style="display:inline;">
             @csrf @method('DELETE')
-            <button type="submit">Hapus</button>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
         </form>
     </td>
 </tr>

@@ -12,7 +12,7 @@
             <a href="/prodi" class="btn-clear-search"><i class="fas fa-times"></i> Reset</a>
         @endif
     </div>
-    <a href="/prodi/create">+ Tambah Prodi</a>
+    <a href="/prodi/create" class="btn btn-primary">+ Tambah Prodi</a>
 </div>
 
 @if($search)
@@ -32,10 +32,10 @@
 <tr>
     <td>{{ $d->nama_prodi }}</td>
     <td>
-        <a href="/prodi/{{ $d->id }}/edit">Edit</a>
+        <a href="/prodi/{{ $d->id }}/edit" class="btn btn-warning">Edit</a>
         <form action="/prodi/{{ $d->id }}" method="POST" style="display:inline;">
             @csrf @method('DELETE')
-            <button type="submit">Hapus</button>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
         </form>
     </td>
 </tr>

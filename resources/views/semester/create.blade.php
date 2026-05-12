@@ -9,7 +9,7 @@
     <label>Nama Semester:</label><br>
     <input type="text" name="nama_semester" required>
     <br><br>
-    <button type="submit">Simpan</button>
+    <button type="submit" class="btn btn-success">Simpan</button>
 </form>
 
 @endsection

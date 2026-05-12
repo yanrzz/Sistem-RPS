@@ -5,7 +5,7 @@
 @csrf @method('PUT')
 
 <input type="text" name="nama_prodi" value="{{ $data->nama_prodi }}">
-<button type="submit">Update</button>
+<button type="submit" class="btn btn-success">Update</button>
 
 </form>
 @endsection

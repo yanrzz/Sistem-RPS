@@ -31,7 +31,7 @@
 </select>
 <br><br>
 
-<button type="submit">Update</button>
+<button type="submit" class="btn btn-success">Update</button>
 
 </form>
 @endsection

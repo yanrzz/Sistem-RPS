@@ -133,7 +133,7 @@
             box-shadow: 0 0 0 2px rgba(0,74,140,0.2);
             background-color: #fff;
         }
-        button[type="submit"], input[type="submit"] {
+        button[type="submit"]:not(.btn), input[type="submit"]:not(.btn) {
             background-color: #004a8c;
             color: white;
             border: none;
@@ -145,7 +145,7 @@
             margin-top: 20px;
             transition: background 0.3s;
         }
-        button[type="submit"]:hover, input[type="submit"]:hover {
+        button[type="submit"]:not(.btn):hover, input[type="submit"]:not(.btn):hover {
             background-color: #003666;
         }
 
@@ -182,51 +182,43 @@
         }
 
         /* Top level anchor (Tambah Button) */
-        .card > a {
-            background-color: #004a8c;
-            color: white;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 4px;
-            display: inline-block;
+        .card > a.btn, .top-action-bar > a.btn {
             margin-bottom: 15px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-        .card > a:hover {
-            background-color: #003666;
         }
 
-        /* Action buttons inside table */
-        td a {
-            color: #004a8c;
+        /* Generic Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
             text-decoration: none;
-            font-weight: 600;
-            margin-right: 10px;
-            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s;
+            text-align: center;
         }
-        td a:hover {
-            text-decoration: underline;
+        .btn-primary { background-color: #004a8c; color: white; }
+        .btn-primary:hover { background-color: #003666; }
+        .btn-success { background-color: #28a745; color: white; }
+        .btn-success:hover { background-color: #218838; }
+        .btn-warning { background-color: #ffc107; color: #212529; }
+        .btn-warning:hover { background-color: #e0a800; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-danger:hover { background-color: #c82333; }
+
+        /* Action buttons inside table */
+        td .btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-right: 5px;
+            font-weight: 600;
         }
         td form {
             display: inline-block;
             margin: 0;
             padding: 0;
-        }
-        td form button {
-            background: none;
-            border: none;
-            color: #d9534f;
-            cursor: pointer;
-            font-weight: 600;
-            padding: 0;
-            margin: 0;
-            font-size: 13px;
-        }
-        td form button:hover {
-            text-decoration: underline;
-            background: none;
         }
 
         /* Search Bar */

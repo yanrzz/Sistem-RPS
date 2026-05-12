@@ -14,7 +14,7 @@
 
 <input type="number" name="tahun_angkatan" value="{{ $data->tahun_angkatan }}">
 
-<button type="submit">Update</button>
+<button type="submit" class="btn btn-success">Update</button>
 
 </form>
 @endsection
