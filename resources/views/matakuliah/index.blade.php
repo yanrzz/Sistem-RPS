@@ -62,8 +62,22 @@
 
 <div class="tabs">
     @foreach($kurikulums as $kurik)
-        <a href="?kurikulum={{ $kurik->id }}{{ $search ? '&search='.$search : '' }}" class="tab-button {{ $kurikulum_id == $kurik->id ? 'active' : '' }}">
-            Kurikulum {{ $kurik->nama_kurikulum }}
+        @php
+            $prodi_name = strtoupper($kurik->prodi->nama_prodi ?? 'PRODI');
+            $words = explode(' ', $prodi_name);
+            $singkatan = '';
+            if (count($words) > 1) {
+                foreach ($words as $w) {
+                    if (strtolower($w) != 'dan') {
+                        $singkatan .= substr($w, 0, 1);
+                    }
+                }
+            } else {
+                $singkatan = substr($prodi_name, 0, 3);
+            }
+        @endphp
+        <a href="?kurikulum={{ $kurik->id }}" class="tab-button {{ (!$search && $kurikulum_id == $kurik->id) ? 'active' : '' }}">
+            {{ $singkatan }} - Kurikulum {{ $kurik->nama_kurikulum }}
         </a>
     @endforeach
 </div>

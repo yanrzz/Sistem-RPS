@@ -1,0 +1,17 @@
+[33mcommit 6a5e36167182e2dd90b028e60a0453374524be38[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: yanrzz <jhyyusran766@gmail.com>
+Date:   Thu May 14 13:06:23 2026 +0800
+
+    feat: Add pagination to matakuliah and kurikulum tabs on RPS
+
+[33mcommit ab13229f3df5f0ad1de169a8be340ae9aebc56b7[m
+Author: yanrzz <jhyyusran766@gmail.com>
+Date:   Tue May 12 11:17:24 2026 +0800
+
+    Update button colors and add delete confirmation popups
+
+[33mcommit db25cd130e47f53ec16d8dee2c531e20dc991bb1[m
+Author: yanrzz <jhyyusran766@gmail.com>
+Date:   Mon May 11 22:05:00 2026 +0800
+
+    Tambah fitur search di admin

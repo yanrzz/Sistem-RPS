@@ -17,17 +17,7 @@ class MatakuliahController extends Controller
         $kurikulum_id = $request->query('kurikulum');
 
         $query = Matakuliah::with(['angkatan.kurikulum.prodi', 'semester']);
-        $kurikulums = Kurikulum::all();
-
-        if (!$kurikulum_id && $kurikulums->count() > 0) {
-            $kurikulum_id = $kurikulums->first()->id;
-        }
-
-        if ($kurikulum_id) {
-            $query->whereHas('angkatan', function($q) use ($kurikulum_id) {
-                $q->where('kurikulum_id', $kurikulum_id);
-            });
-        }
+        $kurikulums = Kurikulum::with('prodi')->get();
 
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -48,6 +38,16 @@ class MatakuliahController extends Controller
                          });
                   });
             });
+        } else {
+            if (!$kurikulum_id && $kurikulums->count() > 0) {
+                $kurikulum_id = $kurikulums->first()->id;
+            }
+
+            if ($kurikulum_id) {
+                $query->whereHas('angkatan', function($q) use ($kurikulum_id) {
+                    $q->where('kurikulum_id', $kurikulum_id);
+                });
+            }
         }
 
         $data = $query->paginate(20)->withQueryString();
