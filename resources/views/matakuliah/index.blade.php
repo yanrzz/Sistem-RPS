@@ -21,6 +21,53 @@
     </div>
 @endif
 
+<style>
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        border-bottom: 2px solid #e0e0e0;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    .tab-button {
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-bottom: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #555;
+        margin-right: 5px;
+        border-radius: 4px 4px 0 0;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .tab-button:hover {
+        background-color: #e9ecef;
+        text-decoration: none;
+        color: #333;
+    }
+    .tab-button.active {
+        background-color: #fff;
+        color: #004a8c;
+        border-top: 3px solid #f2a900;
+        border-bottom: 2px solid #fff;
+        margin-bottom: -2px;
+    }
+    .pagination-wrapper {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="tabs">
+    @foreach($kurikulums as $kurik)
+        <a href="?kurikulum={{ $kurik->id }}{{ $search ? '&search='.$search : '' }}" class="tab-button {{ $kurikulum_id == $kurik->id ? 'active' : '' }}">
+            Kurikulum {{ $kurik->nama_kurikulum }}
+        </a>
+    @endforeach
+</div>
+
 @if($data->count() > 0)
 <table border="1">
 <tr>
@@ -61,6 +108,10 @@
 </tr>
 @endforeach
 </table>
+
+<div class="pagination-wrapper">
+    {{ $data->links() }}
+</div>
 @else
 <div class="no-results">
     <div class="no-results-icon">🔍</div>

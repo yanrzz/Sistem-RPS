@@ -344,6 +344,49 @@
         .top-action-bar > a {
             white-space: nowrap;
         }
+
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            border-radius: 4px;
+            margin: 20px 0;
+            justify-content: flex-end;
+            font-size: 14px;
+        }
+        .pagination li {
+            margin: 0 2px;
+        }
+        .pagination li a, .pagination li span {
+            position: relative;
+            display: block;
+            padding: 8px 12px;
+            line-height: 1.25;
+            color: #004a8c;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .pagination li a:hover {
+            color: #002a5c;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+        .pagination .active span {
+            z-index: 3;
+            color: #fff;
+            background-color: #004a8c;
+            border-color: #004a8c;
+        }
+        .pagination .disabled span {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
     </style>
 </head>
 <body>

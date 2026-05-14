@@ -69,6 +69,48 @@
     .tab-content.active {
         display: block;
     }
+    
+    /* Kurikulum Tabs Styles */
+    .kurikulum-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        border-bottom: 2px solid #f2a900;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    .kurikulum-tab-button {
+        background-color: transparent;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #777;
+        font-size: 18px;
+        transition: all 0.3s;
+        margin-right: 15px;
+        position: relative;
+    }
+    .kurikulum-tab-button:hover {
+        color: #004a8c;
+    }
+    .kurikulum-tab-button.active {
+        color: #004a8c;
+    }
+    .kurikulum-tab-button.active::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 3px;
+        background-color: #f2a900;
+    }
+    .kurikulum-tab-content {
+        display: none;
+    }
+    .kurikulum-tab-content.active {
+        display: block;
+    }
 
     .grid-container {
         display: grid;
@@ -161,10 +203,21 @@
     @if(empty($kurikulumGroups))
         <p style="text-align: center; color: #777; margin-top: 20px;">Belum ada data mata kuliah untuk prodi ini.</p>
     @else
+        <!-- Kurikulum Tabs Navigation -->
+        <div class="kurikulum-tabs">
+            @php $firstKurikTab = true; @endphp
+            @foreach($kurikulumGroups as $kurikulumName => $jenisGroups)
+                <button class="kurikulum-tab-button {{ $firstKurikTab ? 'active' : '' }}" onclick="openKurikulumTab(event, 'kurik-{{ Str::slug($prodiName) }}-{{ Str::slug($kurikulumName) }}', '{{ Str::slug($prodiName) }}')">
+                    Kurikulum {{ $kurikulumName }}
+                </button>
+                @php $firstKurikTab = false; @endphp
+            @endforeach
+        </div>
+
+        <!-- Kurikulum Tabs Content -->
+        @php $firstKurikContent = true; @endphp
         @foreach($kurikulumGroups as $kurikulumName => $jenisGroups)
-            <div class="kurikulum-title-container" style="margin-top: 20px;">
-                <div class="kurikulum-title">Kurikulum {{ $kurikulumName }}</div>
-            </div>
+            <div id="kurik-{{ Str::slug($prodiName) }}-{{ Str::slug($kurikulumName) }}" class="kurikulum-tab-content kurik-content-{{ Str::slug($prodiName) }} {{ $firstKurikContent ? 'active' : '' }}">
             
             <div class="accordion-header">
                 &minus; Mata Kuliah Wajib
@@ -250,6 +303,8 @@
             </table>
             @endif
             
+            </div> <!-- End Kurikulum Tab Content -->
+            @php $firstKurikContent = false; @endphp
         @endforeach
     @endif
 </div>
@@ -276,6 +331,33 @@ function openTab(evt, tabId) {
     if (evt) evt.currentTarget.classList.add("active");
     
     // Re-trigger search on tab change to ensure results are consistent
+    const searchInput = document.getElementById('rpsSearch');
+    if (searchInput && searchInput.value) {
+        filterRps(searchInput.value);
+    }
+}
+
+function openKurikulumTab(evt, tabId, prodiSlug) {
+    var i, tabcontent, tablinks;
+    
+    // Hide all kurikulum tab contents inside THIS prodi tab
+    tabcontent = document.getElementsByClassName("kurik-content-" + prodiSlug);
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].classList.remove("active");
+    }
+
+    // Find the closest kurikulum-tabs container to remove active class from its buttons
+    var tabsContainer = evt.currentTarget.closest('.kurikulum-tabs');
+    tablinks = tabsContainer.getElementsByClassName("kurikulum-tab-button");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+
+    // Show the current kurikulum tab and add "active" to the button
+    document.getElementById(tabId).classList.add("active");
+    evt.currentTarget.classList.add("active");
+    
+    // Re-trigger search
     const searchInput = document.getElementById('rpsSearch');
     if (searchInput && searchInput.value) {
         filterRps(searchInput.value);
@@ -361,21 +443,9 @@ function filterRps(query) {
             }
         });
 
-        // 4. Hide/Show Kurikulum sections
-        const kurikulumTitles = tab.querySelectorAll('.kurikulum-title-container');
-        kurikulumTitles.forEach(title => {
-            let next = title.nextElementSibling;
-            let sectionHasMatch = false;
-            while (next && !next.classList.contains('kurikulum-title-container')) {
-                if (next.style.display !== 'none' && (next.classList.contains('grid-container') || next.classList.contains('mk-table'))) {
-                    sectionHasMatch = true;
-                    break;
-                }
-                next = next.nextElementSibling;
-            }
-            title.style.display = sectionHasMatch ? '' : 'none';
-        });
-        
+        // 4. Handle Kurikulum Tabs (hide empty ones or simply hide content block if needed)
+        // Since kurikulums are tabs now, we don't hide the titles, they are buttons.
+        // We just ensure the user can still click them. We don't need to show/hide the tab buttons themselves.
         // 5. Handle "No Results" message within tab
         let noResultsMsg = tab.querySelector('.no-search-results');
         if (!tabHasAnyMatch && query !== '') {
