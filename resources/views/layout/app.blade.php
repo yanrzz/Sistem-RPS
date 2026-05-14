@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Sistem Kurikulum</title>
+    <title>Admin Dashboard - Sistem Kurikulum UNSULBAR</title>
+    <link rel="icon" type="image/png" href="/images/Unsulbar-Logo-1.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
@@ -29,9 +30,14 @@
             text-align: center;
             border-bottom: 2px solid #f2a900;
         }
+        .sidebar-header img {
+            height: 60px;
+            width: auto;
+            margin-bottom: 10px;
+        }
         .sidebar-header h2 {
             margin: 0;
-            font-size: 20px;
+            font-size: 16px;
         }
         .sidebar-nav {
             padding: 20px 0;
@@ -45,11 +51,18 @@
             font-weight: 500;
             transition: background 0.3s, color 0.3s;
         }
-        .sidebar-nav a:hover, .sidebar-nav a.active {
+        .sidebar-nav a:hover {
             background-color: #005bb5;
             color: white;
             border-left: 4px solid #f2a900;
             padding-left: 21px;
+        }
+        .sidebar-nav a.active {
+            background-color: #28a745;
+            color: white;
+            border-left: 4px solid #1e7e34;
+            padding-left: 21px;
+            font-weight: 700;
         }
         
         /* Main Content */
@@ -394,15 +407,15 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2> Admin Panel</h2>
+            <h2>Admin Panel</h2>
         </div>
         <div class="sidebar-nav">
-            <a href="/prodi">Prodi</a>
-            <a href="/kurikulum">Kurikulum</a>
-            <a href="/angkatan">Angkatan</a>
-            <a href="/semester">Semester</a>
-            <a href="/matakuliah">Mata Kuliah</a>
-            <a href="/rps" target="_blank" style="margin-top: 20px; border-top: 1px solid #005bb5; padding-top: 20px;">Lihat Web Publik ↗</a>
+            <a href="/prodi" class="{{ request()->is('prodi*') ? 'active' : '' }}"><i class="fas fa-building" style="margin-right: 8px;"></i>Prodi</a>
+            <a href="/kurikulum" class="{{ request()->is('kurikulum*') ? 'active' : '' }}"><i class="fas fa-book" style="margin-right: 8px;"></i>Kurikulum</a>
+            <a href="/angkatan" class="{{ request()->is('angkatan*') ? 'active' : '' }}"><i class="fas fa-users" style="margin-right: 8px;"></i>Angkatan</a>
+            <a href="/semester" class="{{ request()->is('semester*') ? 'active' : '' }}"><i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>Semester</a>
+            <a href="/matakuliah" class="{{ request()->is('matakuliah*') ? 'active' : '' }}"><i class="fas fa-graduation-cap" style="margin-right: 8px;"></i>Mata Kuliah</a>
+            <a href="/rps" target="_blank" style="margin-top: 20px; border-top: 1px solid #005bb5; padding-top: 20px;"><i class="fas fa-external-link-alt" style="margin-right: 8px;"></i>Lihat Web Publik ↗</a>
         </div>
     </div>
 

@@ -6,6 +6,7 @@
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Kurikulum & RPS Fakultas Teknik UNSULBAR</title>
+    <link rel="icon" type="image/png" href="/images/Unsulbar-Logo-1.png">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -191,8 +192,12 @@
     <!-- Navbar -->
     <div class="navbar">
         <div class="navbar-logo">
-            <!-- URL Logo Unsulbar -->
-            <img src="/images/fakultas-teknik.png" alt="Logo Unsulbar">
+            <!-- Logo Unsulbar -->
+            <img src="/images/Unsulbar-Logo-1.png" alt="Logo UNSULBAR">
+            <div class="navbar-logo-text">
+                <p class="title">Kurikulum & RPS</p>
+                <p class="subtitle">Fakultas Teknik - Universitas Sulawesi Barat</p>
+            </div>
         </div>
         <div>
             <a href="/login" class="btn-login-nav">Login Admin</a>
