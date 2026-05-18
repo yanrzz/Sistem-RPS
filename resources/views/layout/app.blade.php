@@ -252,7 +252,7 @@
         }
         .search-bar-wrapper form input[type="text"] {
             flex: 1;
-            padding: 10px 40px 10px 38px;
+            padding: 10px 75px 10px 38px;
             border: 2px solid #d0d8e0;
             border-radius: 8px;
             font-size: 14px;
