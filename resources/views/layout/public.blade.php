@@ -185,6 +185,47 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Dark Mode Toggle Button */
+        .btn-dark-mode {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        .btn-dark-mode:hover {
+            color: #f2a900;
+        }
+
+        /* Dark Mode CSS Variables & Overrides */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .public-card {
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        body.dark-mode .public-card h3 {
+            color: #4da3ff;
+            border-bottom: 2px solid #333;
+        }
+        body.dark-mode .vision-mission h4 {
+            color: #fff;
+        }
+        body.dark-mode .navbar {
+            background-color: #0a1f38;
+            border-bottom: 3px solid #f2a900;
+        }
+        body.dark-mode .footer {
+            background-color: #0a1f38;
+        }
+        body.dark-mode .map-container {
+            border: 1px solid #333;
+        }
     </style>
 </head>
 <body>
@@ -199,7 +240,10 @@
                 <p class="subtitle">Fakultas Teknik - Universitas Sulawesi Barat</p>
             </div>
         </div>
-        <div>
+        <div style="display: flex; align-items: center;">
+            <button id="darkModeToggle" class="btn-dark-mode" aria-label="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
             <a href="/login" class="btn-login-nav">Login Admin</a>
         </div>
     </div>
@@ -211,14 +255,15 @@
             <h3>Visi & Misi Fakultas Teknik UNSULBAR</h3>
             
             <h4>Visi:</h4>
-            <p>"Menjadi Fakultas Teknik yang unggul dalam pengembangan ilmu pengetahuan dan teknologi berwawasan lingkungan dan kearifan lokal pada tingkat nasional."</p>
+            <p>"Menjadi Institusi unggul dalam bidang keteknikan dengan mengoptimalkan sumber daya yang berbasis kearifan local guna bersaing di tingkat nasional dan internasional."</p>
+            <p>"Unggul (kompeten, inovatif, professional, mandir, technopreneurship)"</p>
             
             <h4 style="margin-top: 20px;">Misi:</h4>
             <ul>
-                <li>Menyelenggarakan pendidikan akademik dan keahlian di bidang keteknikan yang bermutu dan relevan dengan kebutuhan masyarakat.</li>
-                <li>Melaksanakan penelitian dan pengembangan IPTEK yang inovatif dan berdaya guna bagi peningkatan kesejahteraan masyarakat.</li>
-                <li>Melaksanakan pengabdian kepada masyarakat berbasis hasil riset keteknikan yang tepat guna.</li>
-                <li>Mengembangkan kerja sama dengan institusi pemerintah, swasta, dan industri di tingkat nasional maupun internasional.</li>
+                <li>Menghasilkan Sumber Daya Manusia yang berakhlak mulia, kompeten, inovatif, professional, mandiri,serta memiliki semangat technopreneurship dalam rangka memenuhi dan kebutuhan pembangunan.</li>
+                <li>Menyelenggarakan,mengembangkan dan menyebar luaskan pendidikan, penelitian, dan pengabdian masyarakat pada bidang keteknikan dengan mengoptimalkan sumber daya yang berbasis kearifan lokal.</li>
+                <li>Mewujudkan institusi yang memiliki tata pamong dan tata kelola yang Kredibel, Transparan, Akuntabel, Bertanggung Jawab, Adil, dan berbasis digital.</li>
+                <li>Melaksanakan kerjasama di bidang Pendidikan, Penelitian dan Pengabdian yang saling menguntungkan dengan mitra terkait.</li>
             </ul>
         </div>
 
@@ -291,5 +336,38 @@
         </div>
     </div>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const bodyElement = document.body;
+        const toggleButton = document.getElementById('darkModeToggle');
+        const icon = toggleButton.querySelector('i');
+
+        const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+
+        if (currentTheme) {
+            bodyElement.classList.add(currentTheme);
+            if (currentTheme === 'dark-mode') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+
+        toggleButton.addEventListener('click', function() {
+            bodyElement.classList.toggle('dark-mode');
+            
+            let theme = '';
+            if (bodyElement.classList.contains('dark-mode')) {
+                theme = 'dark-mode';
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            localStorage.setItem('theme', theme);
+        });
+    });
+    </script>
 </body>
 </html>

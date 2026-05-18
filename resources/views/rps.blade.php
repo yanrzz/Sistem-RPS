@@ -173,6 +173,73 @@
         border-color: #004a8c !important;
         box-shadow: 0 0 0 3px rgba(0, 74, 140, 0.1) !important;
     }
+
+    /* Dark Mode Overrides for RPS Page */
+    body.dark-mode .accordion-header {
+        background-color: #2c2c2c;
+        border: 1px solid #444;
+        color: #e0e0e0;
+    }
+    body.dark-mode .tabs {
+        border-bottom: 2px solid #444;
+    }
+    body.dark-mode .tab-button {
+        background-color: #2c2c2c;
+        border: 1px solid #444;
+        color: #aaa;
+    }
+    body.dark-mode .tab-button:hover {
+        background-color: #3a3a3a;
+    }
+    body.dark-mode .tab-button.active {
+        background-color: #1e1e1e;
+        color: #4da3ff;
+        border-top: 3px solid #f2a900;
+        border-bottom: 2px solid #1e1e1e;
+    }
+    body.dark-mode .kurikulum-tab-button {
+        color: #aaa;
+    }
+    body.dark-mode .kurikulum-tab-button:hover,
+    body.dark-mode .kurikulum-tab-button.active {
+        color: #4da3ff;
+    }
+    body.dark-mode .semester-title {
+        color: #e0e0e0;
+    }
+    body.dark-mode .mk-table {
+        color: #e0e0e0;
+    }
+    body.dark-mode .mk-table th {
+        border-top: 1px solid #444;
+        border-bottom: 1px solid #444;
+    }
+    body.dark-mode .mk-table td {
+        border-bottom: 1px solid #333;
+    }
+    body.dark-mode .mk-table tr.total-row td {
+        border-top: 1px solid #444;
+        border-bottom: 1px solid #444;
+    }
+    body.dark-mode .mk-link {
+        color: #4da3ff;
+    }
+    body.dark-mode #rpsSearch {
+        background-color: #2c2c2c;
+        border: 1px solid #444 !important;
+        color: #fff;
+    }
+    body.dark-mode #rpsSearch::placeholder {
+        color: #aaa;
+    }
+    body.dark-mode #rpsSearch:focus {
+        border-color: #f2a900 !important;
+        box-shadow: 0 0 0 3px rgba(242, 169, 0, 0.2) !important;
+    }
+    body.dark-mode .no-search-results {
+        background-color: #2c2c2c !important;
+        color: #ccc !important;
+    }
 </style>
 
 <!-- Search Box -->
