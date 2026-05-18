@@ -407,7 +407,8 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2>Admin Panel</h2>
+            <img src="/images/Unsulbar-Logo-1.png" alt="Logo UNSULBAR" style="height: 60px; width: auto; margin-bottom: 10px;">
+            <h2 style="font-size: 16px;">Admin Panel</h2>
         </div>
         <div class="sidebar-nav">
             <a href="/prodi" class="{{ request()->is('prodi*') ? 'active' : '' }}"><i class="fas fa-building" style="margin-right: 8px;"></i>Prodi</a>

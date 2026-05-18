@@ -312,7 +312,7 @@
 @endforeach
 
 <script>
-function openTab(evt, tabId) {
+function openTab(evt, tabId, skipSearch = false) {
     // Hide all tab contents
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tab-content");
@@ -328,16 +328,22 @@ function openTab(evt, tabId) {
 
     // Show the current tab and add an "active" class to the button
     document.getElementById(tabId).classList.add("active");
-    if (evt) evt.currentTarget.classList.add("active");
+    if (evt) {
+        evt.currentTarget.classList.add("active");
+    } else {
+        var btn = document.querySelector(`.tabs button[onclick*="'${tabId}'"]`);
+        if (btn) btn.classList.add("active");
+    }
     
-    // Re-trigger search on tab change to ensure results are consistent
-    const searchInput = document.getElementById('rpsSearch');
-    if (searchInput && searchInput.value) {
-        filterRps(searchInput.value);
+    if (!skipSearch) {
+        const searchInput = document.getElementById('rpsSearch');
+        if (searchInput && searchInput.value) {
+            filterRps(searchInput.value);
+        }
     }
 }
 
-function openKurikulumTab(evt, tabId, prodiSlug) {
+function openKurikulumTab(evt, tabId, prodiSlug, skipSearch = false) {
     var i, tabcontent, tablinks;
     
     // Hide all kurikulum tab contents inside THIS prodi tab
@@ -346,21 +352,32 @@ function openKurikulumTab(evt, tabId, prodiSlug) {
         tabcontent[i].classList.remove("active");
     }
 
-    // Find the closest kurikulum-tabs container to remove active class from its buttons
-    var tabsContainer = evt.currentTarget.closest('.kurikulum-tabs');
-    tablinks = tabsContainer.getElementsByClassName("kurikulum-tab-button");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
+    // Remove active class from all kurikulum tab buttons inside THIS prodi tab
+    var currentTab = document.getElementById("tab-" + prodiSlug);
+    if (currentTab) {
+        var tabsContainer = currentTab.querySelector('.kurikulum-tabs');
+        if (tabsContainer) {
+            tablinks = tabsContainer.getElementsByClassName("kurikulum-tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+        }
     }
 
     // Show the current kurikulum tab and add "active" to the button
     document.getElementById(tabId).classList.add("active");
-    evt.currentTarget.classList.add("active");
+    if (evt) {
+        evt.currentTarget.classList.add("active");
+    } else {
+        var btn = document.querySelector(`button[onclick*="'${tabId}'"]`);
+        if (btn) btn.classList.add("active");
+    }
     
-    // Re-trigger search
-    const searchInput = document.getElementById('rpsSearch');
-    if (searchInput && searchInput.value) {
-        filterRps(searchInput.value);
+    if (!skipSearch) {
+        const searchInput = document.getElementById('rpsSearch');
+        if (searchInput && searchInput.value) {
+            filterRps(searchInput.value);
+        }
     }
 }
 
@@ -372,85 +389,132 @@ document.getElementById('rpsSearch').addEventListener('input', function() {
 function filterRps(query) {
     query = query.toLowerCase();
     const tabContents = document.querySelectorAll('.tab-content');
+    const isSearching = query.length > 0;
+    
+    let firstMatchingProdiTabId = null;
+    let activeProdiTabHasMatch = false;
     
     tabContents.forEach(tab => {
         let tabHasAnyMatch = false;
+        const prodiSlug = tab.id.replace('tab-', '');
         
-        // 1. Filter rows in all tables
-        const tables = tab.querySelectorAll('.mk-table');
-        tables.forEach(table => {
-            const rows = table.querySelectorAll('tbody tr:not(.total-row)');
-            const totalRow = table.querySelector('.total-row');
-            let tableHasMatch = false;
+        // 1. Process Kurikulum Tabs
+        const kurikulumContents = tab.querySelectorAll('.kurikulum-tab-content');
+        let firstMatchingKurikulumTabId = null;
+        let activeKurikulumTabHasMatch = false;
+
+        kurikulumContents.forEach(kurikTab => {
+            let kurikHasAnyMatch = false;
             
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    row.style.display = '';
-                    tableHasMatch = true;
-                    tabHasAnyMatch = true;
+            // Filter rows in all tables
+            const tables = kurikTab.querySelectorAll('.mk-table');
+            tables.forEach(table => {
+                const rows = table.querySelectorAll('tbody tr:not(.total-row)');
+                const totalRow = table.querySelector('.total-row');
+                let tableHasMatch = false;
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        row.style.display = '';
+                        tableHasMatch = true;
+                        kurikHasAnyMatch = true;
+                        tabHasAnyMatch = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                // Hide/Show table and its total row
+                if (tableHasMatch) {
+                    table.style.display = '';
+                    if (totalRow) totalRow.style.display = isSearching ? 'none' : '';
                 } else {
-                    row.style.display = 'none';
+                    table.style.display = 'none';
+                }
+                
+                // Hide/Show semester wrapper div
+                if (table.parentElement && table.parentElement.parentElement && table.parentElement.parentElement.classList.contains('grid-container')) {
+                    table.parentElement.style.display = tableHasMatch ? '' : 'none';
                 }
             });
             
-            // Hide/Show table and its total row
-            if (tableHasMatch) {
-                table.style.display = '';
-                if (totalRow) totalRow.style.display = query ? 'none' : '';
-            } else {
-                table.style.display = 'none';
-            }
-            
-            // Hide/Show semester title if it exists (it's a sibling of the table or parent)
-            const semesterDiv = table.closest('div');
-            if (semesterDiv && semesterDiv.querySelector('.semester-title')) {
-                semesterDiv.style.display = tableHasMatch ? '' : 'none';
-            }
-        });
-        
-        // 2. Hide/Show Grid Containers and their Headers
-        const gridContainers = tab.querySelectorAll('.grid-container');
-        gridContainers.forEach(grid => {
-            let gridHasMatch = false;
-            const childDivs = grid.children;
-            for (let i = 0; i < childDivs.length; i++) {
-                if (childDivs[i].style.display !== 'none') {
-                    gridHasMatch = true;
-                    break;
+            // Hide/Show Grid Containers and their Headers
+            const gridContainers = kurikTab.querySelectorAll('.grid-container');
+            gridContainers.forEach(grid => {
+                let gridHasMatch = false;
+                const childDivs = grid.children;
+                for (let i = 0; i < childDivs.length; i++) {
+                    if (childDivs[i].style.display !== 'none') {
+                        gridHasMatch = true;
+                        break;
+                    }
                 }
-            }
-            
-            grid.style.display = gridHasMatch ? '' : 'none';
-            
-            // Find the preceding header for Wajib
-            let prev = grid.previousElementSibling;
-            while (prev && !prev.classList.contains('accordion-header')) {
-                prev = prev.previousElementSibling;
-            }
-            if (prev) prev.style.display = gridHasMatch ? '' : 'none';
-        });
-        
-        // 3. Handle Peminatan tables which are not in grid
-        const peminatanTables = tab.querySelectorAll('.mk-table');
-        peminatanTables.forEach(table => {
-            if (!table.closest('.grid-container')) {
-                let prev = table.previousElementSibling;
+                
+                grid.style.display = gridHasMatch ? '' : 'none';
+                
+                let prev = grid.previousElementSibling;
                 while (prev && !prev.classList.contains('accordion-header')) {
                     prev = prev.previousElementSibling;
                 }
-                if (prev) prev.style.display = (table.style.display !== 'none') ? '' : 'none';
-            }
-        });
+                if (prev) prev.style.display = gridHasMatch ? '' : 'none';
+            });
+            
+            // Handle Peminatan tables which are not in grid
+            const peminatanTables = kurikTab.querySelectorAll('.mk-table');
+            peminatanTables.forEach(table => {
+                if (!table.closest('.grid-container')) {
+                    let prev = table.previousElementSibling;
+                    while (prev && !prev.classList.contains('accordion-header')) {
+                        prev = prev.previousElementSibling;
+                    }
+                    if (prev) prev.style.display = (table.style.display !== 'none') ? '' : 'none';
+                }
+            });
 
-        // 4. Handle Kurikulum Tabs (hide empty ones or simply hide content block if needed)
-        // Since kurikulums are tabs now, we don't hide the titles, they are buttons.
-        // We just ensure the user can still click them. We don't need to show/hide the tab buttons themselves.
-        // 5. Handle "No Results" message within tab
+            // Kurikulum Tab Button Visibility
+            const kurikTabId = kurikTab.id;
+            const kurikBtn = tab.querySelector(`button[onclick*="'${kurikTabId}'"]`);
+            if (kurikBtn) {
+                if (isSearching) {
+                    kurikBtn.style.display = kurikHasAnyMatch ? '' : 'none';
+                } else {
+                    kurikBtn.style.display = '';
+                }
+            }
+
+            if (kurikHasAnyMatch) {
+                if (!firstMatchingKurikulumTabId) firstMatchingKurikulumTabId = kurikTabId;
+                if (kurikTab.classList.contains('active')) activeKurikulumTabHasMatch = true;
+            }
+        }); // end kurikulum contents
+
+        // Auto-switch Kurikulum Tab if searching and active has no match
+        if (isSearching && !activeKurikulumTabHasMatch && firstMatchingKurikulumTabId) {
+            openKurikulumTab(null, firstMatchingKurikulumTabId, prodiSlug, true);
+        }
+
+        // Prodi Tab Button Visibility
+        const tabId = tab.id;
+        const prodiBtn = document.querySelector(`.tabs button[onclick*="'${tabId}'"]`);
+        if (prodiBtn) {
+            if (isSearching) {
+                prodiBtn.style.display = tabHasAnyMatch ? '' : 'none';
+            } else {
+                prodiBtn.style.display = '';
+            }
+        }
+
+        if (tabHasAnyMatch) {
+            if (!firstMatchingProdiTabId) firstMatchingProdiTabId = tabId;
+            if (tab.classList.contains('active')) activeProdiTabHasMatch = true;
+        }
+
+        // Handle "No Results" message within tab
         let noResultsMsg = tab.querySelector('.no-search-results');
-        if (!tabHasAnyMatch && query !== '') {
+        if (!tabHasAnyMatch && isSearching) {
             if (!noResultsMsg) {
-                noResultsMsg = document.createElement('p');
+                noResultsMsg = document.createElement('div');
                 noResultsMsg.className = 'no-search-results';
                 noResultsMsg.style.textAlign = 'center';
                 noResultsMsg.style.color = '#777';
@@ -462,10 +526,21 @@ function filterRps(query) {
                 tab.appendChild(noResultsMsg);
             }
             noResultsMsg.style.display = '';
-        } else if (noResultsMsg) {
-            noResultsMsg.style.display = 'none';
+            // Hide kurikulum tabs container if no match
+            const kt = tab.querySelector('.kurikulum-tabs');
+            if(kt) kt.style.display = 'none';
+        } else {
+            if (noResultsMsg) noResultsMsg.style.display = 'none';
+            // Show kurikulum tabs container
+            const kt = tab.querySelector('.kurikulum-tabs');
+            if(kt) kt.style.display = '';
         }
     });
+
+    // Auto-switch Prodi Tab if searching and active has no match
+    if (isSearching && !activeProdiTabHasMatch && firstMatchingProdiTabId) {
+        openTab(null, firstMatchingProdiTabId, true);
+    }
 }
 </script>
 
